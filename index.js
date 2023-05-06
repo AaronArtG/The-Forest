@@ -15,7 +15,7 @@ this.rotation = 0
         const image = new Image()
         image.src ="./img/theHero.gif"
         image.onload = () => {
-            const scale = 0.50
+            const scale = 0.40
             this.image = image 
             this.width = image.width * scale
             this.height = image.height* scale
@@ -84,9 +84,84 @@ class Projectile {
 }
 
 
+
+class BadTrees {
+    constructor({position}) {
+
+        this.velocity = {
+            x: 0,
+            y: 0
+        }
+
+        const image = new Image()
+        image.src ="./img/evilTree.jpg"
+        image.onload = () => {
+            const scale = 0.20
+            this.image = image 
+            this.width = image.width * scale
+            this.height = image.height* scale
+        this.position = {
+          x: position.x,
+          y: position.y 
+        }   
+        }
+ }
+
+draw() {
+        // c.fillStyle = "red"
+        // c.fillRect(this.position.x,this.position.y, this.width, this.height)
+
+
+
+     c.drawImage(
+        this.image,
+        this.position.x,
+        this.position.y,
+        this.width, 
+        this.height
+        )
+     
+    }
+    update(){
+        if (this.image) {
+        this.draw()
+        this.position.x += this.velocity.x  
+        this.position.y += this.velocity.y   
+        }
+    }
+}
+
+
+
+class Grid {
+    constructor(){
+        this.position = {
+            x: 0,
+            y: 0
+        }
+        this.velocity = {
+            x: 0,
+            y: 0
+        }
+    this.badTree = [
+       
+    ]
+    for(let i = 0;i < 10; i++){
+        this.badTree.push(new BadTrees({position:{
+            x:i * 10,
+            y:0
+        }}))
+    }
+    console.log(this.badTree)
+    }
+
+    update(){}
+}
+
 const player = new theHeroKinda()
-const projectiles = [
-  ]
+const projectiles = []
+const grids = [new Grid()]
+
 const keys = {
     a: {
         pressed: false
@@ -100,10 +175,17 @@ const keys = {
 }
 
 
+
+
+
+
+
+
 function animate(){
     requestAnimationFrame(animate)
     c.fillStyle = "#E6E6E6"
     c.fillRect(0, 0, canvas.width, canvas.height)
+    
     player.update()
     projectiles.forEach((projectile, index) => {
 
@@ -115,6 +197,13 @@ function animate(){
         } else {
         projectile.update()
         }
+    })
+
+    grids.forEach(grid =>{
+      grid.update()  
+      grid.badTree.forEach(BadTrees =>{
+        BadTrees.update()
+      })
     })
 
     if (keys.a.pressed && player.position.x >= 0) {
