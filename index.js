@@ -94,9 +94,9 @@ class Invader {
         }
 
         const image = new Image()
-        image.src ="./img/evilTree.jpg"
+        image.src ="./img/evilTree1.png"
         image.onload = () => {
-            const scale = 0.20
+            const scale = .030
             this.image = image 
             this.width = image.width * scale
             this.height = image.height* scale
@@ -179,7 +179,7 @@ class Grid {
 
 const player = new theHeroKinda()
 const projectiles = []
-const grids = [new Grid()]
+const grids = []
 
 const keys = {
     a: {
@@ -197,8 +197,9 @@ const keys = {
 
 
 
-
-
+let frames = 0 
+let randomInterval = Math.floor(Math.random() * 500 + 500)
+console.log(randomInterval)
 
 function animate(){
     requestAnimationFrame(animate)
@@ -218,10 +219,49 @@ function animate(){
         }
     })
 
-    grids.forEach(grid => {
+    grids.forEach((grid, gridIndex) => {
       grid.update()  
-      grid.invaders.forEach(Invader => {
-        Invader.update({velocity: grid.velocity})
+      grid.invaders.forEach((invader, i) => {
+        invader.update({velocity: grid.velocity})
+
+        projectiles.forEach((projectile,j) => {
+            if(
+                projectile.position.y - projectile.radius <= 
+                invader.position.y + invader.height && 
+                projectile.position.x + projectile.radius >=
+                invader.position.x && projectile.position.x - 
+                projectile.radius <= invader.position.x + invader.width &&
+                projectile.position.y + projectile.radius >= invader.position.y
+
+
+                ){
+            
+                setTimeout(()=>{
+                    const invaderFound = grid.invaders.find(
+                        (invader2) => invader2 === invader
+                             )
+                    const projectileFound = projectiles.find(
+                        (projectile2) => projectile2 === projectile
+                    )
+                    // remove invader and projectile
+                    if (invaderFound && projectileFound){    
+                   grid.invaders.splice(i, 1) 
+                   projectiles.splice(j, 1)
+
+                   if(grid.invaders,length > 0){
+                    const firstInvader = grid.invaders[0]
+                    const lastInvader = grid.invaders[grid.invaders.length -1]
+
+                    grid.width = lastInvader.position.x - 
+                    firstInvader.position.x + lastInvader.width
+                    grid.position.x = firstInvader.position.x
+                   } else{
+                    grids.splice(gridIndex, 1)
+                   }
+                    }
+                }, 0)
+            }
+        })
       })
      })
   
@@ -236,6 +276,16 @@ function animate(){
         player.velocity.x = 0
         player.rotation = 0
     }
+
+    console.log(frames)
+    //spawning enemies
+    if(frames % randomInterval === 0){
+        grids.push(new Grid())
+        randomInterval = Math.floor(Math.random() * 500 + 500)
+        frames = 0
+        console.log(randomInterval)
+    }
+    frames++
 }
 
 animate()
@@ -262,7 +312,7 @@ addEventListener('keydown',({key}) => {
             },
             velocity: {
                 x:0,
-                y:-10
+                y:-30
             }
         }))
         break
