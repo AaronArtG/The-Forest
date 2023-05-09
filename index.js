@@ -85,7 +85,7 @@ class Projectile {
 
 
 
-class BadTrees {
+class Invader {
     constructor({position}) {
 
         this.velocity = {
@@ -120,13 +120,12 @@ draw() {
         this.width, 
         this.height
         )
-     
     }
-    update(){
+    update({velocity}){
         if (this.image) {
         this.draw()
-        this.position.x += this.velocity.x  
-        this.position.y += this.velocity.y   
+        this.position.x += velocity.x  
+        this.position.y += velocity.y   
         }
     }
 }
@@ -140,22 +139,42 @@ class Grid {
             y: 0
         }
         this.velocity = {
-            x: 0,
+            x: 3,
             y: 0
         }
-    this.badTree = [
+    this.invaders = []
+        const columns = Math.floor( Math.random() * 10 + 5 )
+        const rows = Math.floor( Math.random() * 5 + 2 )
+
+        this.width = columns * 30
+
+
        
-    ]
-    for(let i = 0;i < 10; i++){
-        this.badTree.push(new BadTrees({position:{
-            x:i * 10,
-            y:0
-        }}))
+    for (let x = 0; x < columns; x++){
+        for (let y = 0; y < rows; y++){
+        this.invaders.push(new Invader({position:{
+            x:x * 30,
+            y:y * 30
+         }
+        })
+        )
+         }
     }
-    console.log(this.badTree)
+    console.log(this.invaders)
+    }
+    update(){
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+
+        this.velocity.y = 0 
+
+        if(this.position.x + this.width >= canvas.width || this. position.x <= 0){
+            this.velocity.x = -this.velocity.x
+            this.velocity.y = 30
+        }
     }
 
-    update(){}
+   
 }
 
 const player = new theHeroKinda()
@@ -199,12 +218,13 @@ function animate(){
         }
     })
 
-    grids.forEach(grid =>{
+    grids.forEach(grid => {
       grid.update()  
-      grid.badTree.forEach(BadTrees =>{
-        BadTrees.update()
+      grid.invaders.forEach(Invader => {
+        Invader.update({velocity: grid.velocity})
       })
-    })
+     })
+  
 
     if (keys.a.pressed && player.position.x >= 0) {
      player.velocity.x = -9
