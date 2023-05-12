@@ -1,8 +1,9 @@
+const scoreEl = document.querySelector('#scoreEl')
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = 1024
+canvas.height = 1024
 
 class theHeroKinda {
     constructor() {
@@ -16,7 +17,7 @@ this.opacity = 1
         const image = new Image()
         image.src ="./img/theHero.gif"
         image.onload = () => {
-            const scale = 0.40
+            const scale = 0.20
             this.image = image 
             this.width = image.width * scale
             this.height = image.height* scale
@@ -66,7 +67,7 @@ class Projectile {
         this.position = position
         this.velocity = velocity
 
-        this.radius = 6
+        this.radius = 4
     }
 
 
@@ -151,7 +152,7 @@ class Invader {
         const image = new Image()
         image.src ="./img/evilTree1.png"
         image.onload = () => {
-            const scale = .030
+            const scale = 0.030
             this.image = image 
             this.width = image.width * scale
             this.height = image.height* scale
@@ -253,7 +254,7 @@ const invaderProjectiles = []
 const particles = []
 
 const keys = {
-    a: {
+    a : {
         pressed: false
     },
     d: {
@@ -274,7 +275,7 @@ let game = {
     over: false,
     active: true
 }
-
+let score = 0
 
 function createParticles({object, color}){
     for(let i = 0; i < 15; i++){
@@ -296,9 +297,11 @@ function animate(){
     if(!game.active) return
     requestAnimationFrame(animate)
     c.fillStyle = "#E6E6E6"
-    c.fillRect(0, 0, canvas.width, canvas.height)
+    c.fillRect(0, 0, canvas.width, canvas.height)  
+
      player.update()
-     particles.forEach((particle, i) =>{
+     particles.forEach((particle, index) =>{
+
         if(particle.opacity <= 0){
             setTimeout(() => {
             particles.splice(i, 1)
@@ -353,16 +356,15 @@ function animate(){
         } else {
         projectile.update()
         }
-
     })
 
     grids.forEach((grid, gridIndex) => {
       grid.update()  
           
 
-    if(frames % 100 === 0 && grid.invaders.length > 0){
-        grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
-    }
+    // if(frames % 100 === 0 && grid.invaders.length > 0){
+    //     grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
+    // }
 
       grid.invaders.forEach((invader, i) => {
         invader.update({velocity: grid.velocity})
@@ -377,17 +379,19 @@ function animate(){
                 projectile.radius <= invader.position.x + invader.width &&
                 projectile.position.y + projectile.radius >= invader.position.y
             ){
-  
-            
                 setTimeout(()=>{
-                    const invaderFound = grid.invaders.find(
-                        (invader2) => invader2 === invader
-                             )
-                    const projectileFound = projectiles.find(
-                        (projectile2) => projectile2 === projectile
-                    )
+                    const invaderFound = grid.invaders.find((
+                        invader2) =>invader2 === invader
+                        )
+                    const projectileFound = projectiles.find((
+                        projectile2) => projectile2 === projectile
+                        )
                     // remove invader and projectile
                     if (invaderFound && projectileFound){  
+                        score += 100
+                        console.log(score)
+                        scoreEl.innerHTML = score
+
                         createParticles({
                             object: invader,
                         })
@@ -488,3 +492,5 @@ addEventListener('keyup',({key}) => {
 
     }
 })
+
+
