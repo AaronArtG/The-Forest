@@ -2,8 +2,8 @@ const scoreEl = document.querySelector('#scoreEl')
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = 1024
-canvas.height = 1024
+canvas.width = 700
+canvas.height = 700  
 
 class theHeroKinda {
     constructor() {
@@ -362,9 +362,9 @@ function animate(){
       grid.update()  
           
 
-    // if(frames % 100 === 0 && grid.invaders.length > 0){
-    //     grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
-    // }
+    if(frames % 100 === 0 && grid.invaders.length > 0){
+        grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles)
+    }
 
       grid.invaders.forEach((invader, i) => {
         invader.update({velocity: grid.velocity})
@@ -398,7 +398,7 @@ function animate(){
                    grid.invaders.splice(i, 1) 
                    projectiles.splice(j, 1)
 
-                   if(grid.invaders,length > 0){
+                   if(grid.invaders.length > 0){
                     const firstInvader = grid.invaders[0]
                     const lastInvader = grid.invaders[grid.invaders.length -1]
 
