@@ -2,6 +2,17 @@ const scoreEl = document.querySelector('#scoreEl')
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+// Get the restart button element by its ID
+const restartBtn = document.getElementById('restart-btn');
+
+// Add an event listener to listen for when the button is clicked
+restartBtn.addEventListener('click', () => {
+  // Reset the game here
+  // For example, you could reload the page:
+  location.reload();
+});
+
+
 canvas.width = 700
 canvas.height = 700  
 
@@ -492,5 +503,3 @@ addEventListener('keyup',({key}) => {
 
     }
 })
-
-
