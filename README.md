@@ -30,4 +30,7 @@ The game controls are as follows:
 
 The game was built using JavaScript, HTML, and CSS. 
 The game was inspired by the classic Space Invaders arcade game.
+images from https://pngtree.com/freepng/trees_4414355.html  &&
+https://dribbble.com/shots/2049457-Running-Redneck
+
 Chris Courses helped me with this build https://www.youtube.com/watch?v=MCVU0w73uKI
