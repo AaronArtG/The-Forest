@@ -28,7 +28,7 @@ this.opacity = 1
         const image = new Image()
         image.src ="./img/theHero.gif"
         image.onload = () => {
-            const scale = 0.20
+            const scale = 0.15
             this.image = image 
             this.width = image.width * scale
             this.height = image.height* scale
@@ -132,7 +132,7 @@ class InvaderProjectile {
         this.position = position
         this.velocity = velocity
 
-     this.width = 3
+     this.width = 5
      this.height = 10
     }
 
